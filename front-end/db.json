@@ -1,0 +1,76 @@
+{
+  "users": [
+    { "id": 1, "name": "User 1", "email": "user1@email.com" },
+    { "id": 2, "name": "User 2", "email": "user2@email.com" }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "value": 10.22,
+      "date": "2025-08-15",
+      "orderTypeId": 1,
+      "orderSituationId": 2,
+      "orderCategoryId": 1,
+      "userId": 1
+    }
+  ],
+  "orderTypes": [
+    { "id": 1, "name": "Receita" },
+    { "id": 2, "name": "Despesa" }
+  ],
+  "orderSituations": [
+    { "id": 1, "name": "Pendente", "slug": "pending" },
+    { "id": 2, "name": "Ok", "slug": "ok" }
+  ],
+  "orderCategories": [
+    {
+      "id": 1,
+      "name": "Pagamento",
+      "status": 1,
+      "ordertypeId": 1,
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "name": "Mercado ...",
+      "status": 1,
+      "ordertypeId": 2,
+      "userId": 1
+    },
+    {
+      "id": 3,
+      "name": "Cinema ..",
+      "status": 1,
+      "ordertypeId": 2,
+      "userId": 1
+    },
+    {
+      "id": 4,
+      "name": "Combustivel",
+      "status": 1,
+      "ordertypeId": 2,
+      "userId": 1
+    },
+    {
+      "id": 5,
+      "name": "Dividendos",
+      "status": 1,
+      "ordertypeId": 1,
+      "userId": 1
+    },
+    {
+      "id": 6,
+      "name": "Energia ;;",
+      "status": 1,
+      "ordertypeId": 1,
+      "userId": 1
+    },
+    {
+      "id": 7,
+      "name": "Água ;; ..",
+      "status": 1,
+      "ordertypeId": 2,
+      "userId": 1
+    }
+  ]
+}
