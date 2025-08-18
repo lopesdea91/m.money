@@ -1,4 +1,4 @@
-import { FindOptionsWhere, Repository } from 'typeorm'
+import { FindOptionsOrder, FindOptionsWhere, Repository } from 'typeorm'
 
 export const repositoryBase = <T extends { id: number }>(repository: Repository<T>) => {
   type DataOptions = FindOptionsWhere<T>
@@ -12,6 +12,9 @@ export const repositoryBase = <T extends { id: number }>(repository: Repository<
         skip: (currentPage - 1) * perPage,
         take: perPage,
         where: where as DataOptions,
+        order: {
+          id: 'desc'
+        } as FindOptionsOrder<T>
       }))
 
       const lastPages = Math.ceil(total / perPage);

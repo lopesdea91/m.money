@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { createFinanceTag, deleteFinanceTag, getFinanceTagById, getFinanceTags, updateFinanceTag } from '../controllers/FinanceTagControllers';
+import financeTagController from '../app/Controllers/FinanceTagControllers';
 
 const financeTagRoutes = Router();
 
-financeTagRoutes.get('/finance-tags', getFinanceTags);
-financeTagRoutes.get('/finance-tags/:id', getFinanceTagById);
-financeTagRoutes.post('/finance-tags', createFinanceTag);
-financeTagRoutes.put('/finance-tags/:id', updateFinanceTag);
-financeTagRoutes.delete('/finance-tags/:id', deleteFinanceTag);
+financeTagRoutes.get('/finance-tags', financeTagController.get);
+financeTagRoutes.get('/finance-tags/:id', financeTagController.getId);
+financeTagRoutes.post('/finance-tags', financeTagController.create);
+financeTagRoutes.put('/finance-tags/:id', financeTagController.update);
+financeTagRoutes.delete('/finance-tags/:id', financeTagController.delete);
 
 export default financeTagRoutes;

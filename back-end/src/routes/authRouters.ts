@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { authData, authSignIn, authSignOut } from '../controllers/AuthControllers';
+import authControllers from '../app/Controllers/AuthControllers';
 
 const authRoutes = Router();
 
-authRoutes.post('/auth/signIn', authSignIn);
-authRoutes.post('/auth/signOut', authSignOut);
-authRoutes.get('/auth/data', authData);
+authRoutes.post('/auth/signIn', authControllers.signIn);
+authRoutes.post('/auth/signOut', authControllers.signOut);
+authRoutes.get('/auth/data', authControllers.data);
 
 export default authRoutes;

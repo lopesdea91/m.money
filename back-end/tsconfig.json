@@ -7,10 +7,10 @@
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"]
-    }
+    "sourceMap": true
+    // "baseUrl": "./src",
+    // "paths": {
+    //   "@/*": ["*"]
+    // }
   }
 }

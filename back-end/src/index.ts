@@ -1,14 +1,14 @@
 import * as cors from 'cors';
 import * as express from 'express';
-import { AppDataSource } from './data-source';
 
-import middleware from './middleware';
+import AppMiddlewareProvider from './app/Providers/AppMiddlewareProvider';
+import { AppDataSource } from './database/AppDataSource';
 import authRoutes from './routes/authRouters';
 import financeOrderRoutes from './routes/financeOrder';
 import financeTagRoutes from './routes/financeTagRoutes';
 import financeTypeRoutes from './routes/financeTypeRoutes';
+import systemRoutes from './routes/systemRoutes';
 import userRoutes from './routes/userRoutes';
-import RunSeedings from './seeding';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -28,26 +28,17 @@ app.use(express.json());
 
 AppDataSource.initialize()
   .then(async () => {
-    // console.log("Data Source has been initialized!");
 
     /** Middleware */
-    app.use(middleware);
+    app.use(AppMiddlewareProvider);
 
     /** ROUTERS */
+    app.use(systemRoutes);
     app.use(authRoutes);
     app.use(userRoutes);
     app.use(financeOrderRoutes);
-    app.use(financeTypeRoutes);
     app.use(financeTagRoutes);
-
-    /** Seeders */
-    await RunSeedings()
-
-    // app.get('/users', getUsers);
-    // app.get('/users/:id', getUserById);
-    // app.post('/users', createUser);
-    // app.put('/users/:id', updateUser);
-    // app.delete('/users/:id', deleteUser);
+    app.use(financeTypeRoutes);
 
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);

@@ -11,8 +11,8 @@ export class User {
   @Column()
   email: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column()
+  active: number;
 
   @Column()
   token: string;

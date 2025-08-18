@@ -1,12 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
-import { AppDataSource } from '../data-source';
-import { User } from '../entity/User';
+import { AppDataSource } from '../../database/AppDataSource';
+import { User } from '../../entity/User';
 
 const userRepository = AppDataSource.getRepository(User);
 
-export default async function middleware(req: Request, res: Response, next: NextFunction) {
+export default async function AppMiddlewareProvider(req: Request, res: Response, next: NextFunction) {
+  console.log(req.headers.authorization);
   if ([
+    '/users',
     '/auth/signIn',
+    '/seeders',
   ].includes(req.url)) {
     return next()
   }

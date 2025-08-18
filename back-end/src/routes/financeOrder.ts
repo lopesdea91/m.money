@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import { createFinanceOrder, deleteFinanceOrder, getFinanceOrderById, getFinanceOrders, updateFinanceOrder } from '../controllers/FinanceOrderControllers'
+import financeOrderController from '../app/Controllers/FinanceOrderControllers'
 
 const financeOrderRoutes = Router()
 
-financeOrderRoutes.get('/finance-orders', getFinanceOrders)
-financeOrderRoutes.get('/finance-orders/:id', getFinanceOrderById)
-financeOrderRoutes.post('/finance-orders', createFinanceOrder)
-financeOrderRoutes.put('/finance-orders/:id', updateFinanceOrder)
-financeOrderRoutes.delete('/finance-orders', deleteFinanceOrder)
+financeOrderRoutes.get('/finance-orders', financeOrderController.get)
+financeOrderRoutes.get('/finance-orders/:id', financeOrderController.getId)
+financeOrderRoutes.post('/finance-orders', financeOrderController.create)
+financeOrderRoutes.put('/finance-orders/:id', financeOrderController.update)
+financeOrderRoutes.delete('/finance-orders/:id', financeOrderController.delete)
 
 export default financeOrderRoutes

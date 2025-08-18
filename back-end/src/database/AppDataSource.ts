@@ -1,10 +1,11 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { FinanceOrder } from "./entity/FinanceOrder";
-import { FinanceOrderTags } from "./entity/FinanceOrderTags";
-import { FinanceTag } from "./entity/FinanceTag";
-import { FinanceType } from "./entity/FinanceType";
-import { User } from "./entity/User";
+
+import { FinanceOrder } from "../entity/FinanceOrder";
+import { FinanceOrderTags } from "../entity/FinanceOrderTags";
+import { FinanceTag } from "../entity/FinanceTag";
+import { FinanceType } from "../entity/FinanceType";
+import { User } from "../entity/User";
 
 export const AppDataSource = new DataSource({
   type: "postgres",

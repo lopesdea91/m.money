@@ -12,6 +12,9 @@ export class FinanceOrder {
   date: string;
 
   @Column()
+  month: string;
+
+  @Column()
   typeId: number;
 
   // @Column()

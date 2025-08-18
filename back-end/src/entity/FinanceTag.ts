@@ -11,6 +11,9 @@ export class FinanceTag {
   @Column()
   typeId: number;
 
+  @Column({ default: 0 })
+  active: number;
+
   // @OneToOne(() => FinanceType, (financeType) => financeType.id)
   // type: FinanceType
 
