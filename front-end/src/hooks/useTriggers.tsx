@@ -1,17 +1,28 @@
+import type { TriggerValueKeys } from "@/types";
+import sleep from "@/utils/sleep";
 import { useEffect } from "react";
 import { useStore } from "./useStore";
 
-type Callback<T> = (params?: T) => void;
+type Callback<T> = (params: T) => void;
 
-function useTrigger<T>(key: string, callback: Callback<T>) {
+function useTrigger<T>(
+  key: TriggerValueKeys,
+  callback: Callback<T>,
+  { delay }: { delay: number } = { delay: 50 }
+) {
   const { triggers } = useStore();
 
   useEffect(() => {
-    const v = triggers?.[key] as T;
+    async function handler() {
+      const v = triggers?.[key] as T;
 
-    if (!v) return;
+      if (!v) return;
 
-    callback(v);
+      if (delay) await sleep(delay);
+
+      callback(v);
+    }
+    handler();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggers?.[key]]);

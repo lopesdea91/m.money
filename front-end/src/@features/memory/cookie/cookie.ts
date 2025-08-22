@@ -9,3 +9,7 @@ function baseStored<T>(key: string, defaultValue: T) {
 }
 
 export const authCookie = baseStored('auth', { token: '' })
+
+export const cookie = {
+  auth: authCookie
+}

@@ -1,6 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/utils/utils"
+import { cn } from "@/utils/utils";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { Select } from "./select";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -14,7 +16,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
         {...props}
       />
     </div>
-  )
+  );
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
@@ -24,7 +26,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
       className={cn("[&_tr]:border-b", className)}
       {...props}
     />
-  )
+  );
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
@@ -34,7 +36,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
       className={cn("[&_tr:last-child]:border-0", className)}
       {...props}
     />
-  )
+  );
 }
 
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
@@ -47,7 +49,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
@@ -60,7 +62,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
@@ -73,7 +75,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
@@ -86,7 +88,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TableCaption({
@@ -99,16 +101,64 @@ function TableCaption({
       className={cn("text-muted-foreground mt-4 text-sm", className)}
       {...props}
     />
-  )
+  );
+}
+function TablePagination({
+  perPage,
+  currentPage,
+  total,
+  lastPages,
+  listLimit,
+  onLimit,
+  onPrevPage,
+  onNextPage,
+}: {
+  perPage: number;
+  currentPage: number;
+  total: number;
+  lastPages: number;
+  listLimit: { value: string; label: string }[];
+  onLimit: (v: number) => void;
+  onPrevPage: (v: number) => void;
+  onNextPage: (v: number) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <Select
+        placeholder="Limit"
+        value={perPage?.toString?.()}
+        onChange={(v) => onLimit(+v)}
+        options={listLimit}
+        className="w-fit"
+      />
+      <button
+        className="p-2 border rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={currentPage === 1}
+        onClick={() => onPrevPage(Number(currentPage) - 1)}
+      >
+        <ChevronLeftIcon size={18} />
+      </button>
+      <button
+        className="p-2 border rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={currentPage === lastPages}
+        onClick={() => onNextPage(Number(currentPage) + 1)}
+      >
+        <ChevronRightIcon size={18} />
+      </button>
+
+      <span className="ml-auto text-xs">Total: {total}</span>
+    </div>
+  );
 }
 
 export {
   Table,
-  TableHeader,
   TableBody,
+  TableCaption,
+  TableCell,
   TableFooter,
   TableHead,
+  TableHeader,
+  TablePagination,
   TableRow,
-  TableCell,
-  TableCaption,
-}
+};

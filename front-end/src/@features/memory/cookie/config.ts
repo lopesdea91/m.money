@@ -17,7 +17,7 @@ export function setCookieValue<T>(key: string, value: T): void {
   try {
     const options: SerializeOptions = {
       // maxAge: 30 * 24 * 60 * 60,
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 24,
       path: '/',
       // httpOnly: true,
       secure: true

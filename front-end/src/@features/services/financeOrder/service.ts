@@ -1,9 +1,28 @@
-import { createFinanceOrderApi, deleteFinanceOrderApi, getFinanceOrderApi, getIdFinanceOrderApi, updateFinanceOrderApi } from "@/@features/api/financeOrderApi"
+import { createFinanceOrderApi, deleteFinanceOrderApi, getFinanceOrderApi, getIdFinanceOrderApi, getPaginationFinanceOrderApi, updateFinanceOrderApi } from "@/@features/api/financeOrderApi"
 import { getStore } from "@/@store"
 
-export const getFinanceOrderService = async (search: {
+export const getPaginationFinanceOrderService = async (search: {
+  limit: number
+  page: number
+  month?: string
   typeId?: number
-  status?: number
+  tagIds?: number[]
+  active?: number
+}) => {
+  const userId = getStore().auth.id
+
+  const paginationFinanceOrder = await getPaginationFinanceOrderApi({ ...search, userId })
+
+  return paginationFinanceOrder
+}
+
+export const getFinanceOrderService = async (search: {
+  month?: string
+  typeId?: number
+  tagIds?: number[]
+  active?: number
+  limit?: number
+  page?: number
 } = {}) => {
   const userId = getStore().auth.id
 
@@ -24,7 +43,17 @@ export const createFinanceOrderService = async (payload: {
   typeId: number
   tagIds: number[]
 }) => {
-  const data = { ...payload }
+  const userId = getStore().auth.id
+
+  const data = {
+    value: payload.value,
+    date: payload.date,
+    month: payload.date.slice(0, 7),
+    typeId: payload.typeId,
+    tagIds: payload.tagIds,
+    active: 1,
+    userId
+  }
 
   const financeOrderCreated = await createFinanceOrderApi(data)
 
@@ -38,12 +67,19 @@ export const updateFinanceOrderService = async (
     date: string
     typeId: number
     tagIds: number[]
-    // active: number
-    // createdAt: string
-    // userId: number
   }
 ) => {
-  const data = { ...payload }
+  const userId = getStore().auth.id
+
+  const data = {
+    value: payload.value,
+    date: payload.date,
+    month: payload.date.slice(0, 7),
+    typeId: payload.typeId,
+    tagIds: payload.tagIds,
+    active: 1,
+    userId
+  }
 
   const financeOrderUpdated = await updateFinanceOrderApi(id, data)
 

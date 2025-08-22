@@ -1,5 +1,7 @@
-import { getStore } from "@/@store";
+import { appStored } from "@/@features/memory/stored";
+import { Input } from "@/components/ui/input";
 import useMiddleware from "@/hooks/useMiddleware";
+import { useStore } from "@/hooks/useStore";
 import { cn } from "@/utils/utils";
 import { Link, Outlet } from "react-router";
 import ToastGeneric from "../Toasts.generic";
@@ -7,7 +9,7 @@ import ToastGeneric from "../Toasts.generic";
 export const LayoutPrivate = () => {
   const { isPending } = useMiddleware();
 
-  const { auth } = getStore();
+  const { auth, month, setMonth } = useStore();
 
   return isPending ? null : (
     <>
@@ -17,10 +19,21 @@ export const LayoutPrivate = () => {
         <div
           className={cn(
             "max-w-4xl mx-auto",
-            "flex items-center justify-between p-4"
+            "flex items-center start gap-4 p-4"
           )}
         >
           <h1 className="text-xl font-bold">m.money</h1>
+
+          <Input
+            className="w-fit mr-auto border-y-transparent text-sm"
+            value={month}
+            onChange={({ target }) => {
+              appStored().set({ month: target.value });
+              setMonth(target.value);
+              console.log(target.value);
+            }}
+            type="month"
+          />
 
           <nav className="flex gap-2 md:gap-4 flex-col md:flex-row md:items-center md:justify">
             <ul className="flex items-center gap-2 md:gap-4">

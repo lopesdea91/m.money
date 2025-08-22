@@ -1,27 +1,22 @@
-import { PlusIcon } from "lucide-react";
-
-import { triggerValue } from "@/@features/services/triggers";
+import { Modal } from "@/components/Modal";
 import PageTitle from "@/components/PageTitle";
-import ModalFormTag from "./_components/ModalFormTag";
+import FormTag from "./_components/FormTag";
+import FormTagSearch from "./_components/FormTagSearch";
 import TableTags from "./_components/TableTags";
+import { TagPageContextProvider } from "./page.provider";
 
 export const TagsView = () => {
   return (
-    <>
+    <TagPageContextProvider>
       <PageTitle label="Tags" className="justify-between">
-        <button
-          className="cursor-pointer border rounded size-[24px] flex *:m-auto"
-          onClick={() =>
-            triggerValue({ modalFormTag: true, modalFormTagData: {} })
-          }
-        >
-          <PlusIcon size={18} />
-        </button>
+        <FormTagSearch />
       </PageTitle>
 
       <TableTags />
 
-      <ModalFormTag />
-    </>
+      <Modal keyOpen="modalFormTag" title="Tag">
+        <FormTag />
+      </Modal>
+    </TagPageContextProvider>
   );
 };

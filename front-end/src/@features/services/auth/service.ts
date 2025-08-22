@@ -1,5 +1,8 @@
 import { authSignInApi, authSignOutApi, authUserApi } from "@/@features/api/authApi"
+import { getFinanceTagApi } from "@/@features/api/financeTagApi"
+import { getFinanceTypeApi } from "@/@features/api/financeTypeApi"
 import { authCookie } from "@/@features/memory/cookie"
+import { appStored } from "@/@features/memory/stored"
 import { setStore } from "@/@store"
 
 export const authSignInService = async (
@@ -10,13 +13,25 @@ export const authSignInService = async (
 ) => {
   const body = { ...payload }
 
-  const { data } = await authSignInApi(body)
+  const { data: { token } } = await authSignInApi(body)
 
-  authCookie.set({ token: data.token })
+  authCookie.set({ token: token })
+
+  const { data: auth } = await authUserApi()
+
+  const userId = auth.id
+
+  const listFinanceTypes = await getFinanceTypeApi()
+  const listFinanceTags = await getFinanceTagApi({ userId })
+
+  const { month } = appStored().get()
 
   setStore({
     l: { isLogged: true },
-    auth: { ...data.user },
+    auth: { ...auth },
+    month,
+    listFinanceTags,
+    listFinanceTypes
   })
 }
 
@@ -34,11 +49,20 @@ export const authSignOutService = async () => {
 }
 
 export const getAuthUserService = async () => {
-  const { data } = await authUserApi()
+  const { data: auth } = await authUserApi()
+
+  const userId = auth.id
+
+  const listFinanceTypes = await getFinanceTypeApi()
+  const listFinanceTags = await getFinanceTagApi({ userId })
+
+  const { month } = appStored().get()
 
   setStore({
     l: { isLogged: true },
-    auth: { ...data },
+    auth: { ...auth },
+    month,
+    listFinanceTags,
+    listFinanceTypes
   })
-
 }

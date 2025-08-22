@@ -11,7 +11,7 @@ export function useListFinanceTag(autoHandler: boolean = false) {
     const listFinanceTags = store.listFinanceTags
 
     if (listFinanceTags.length === 0) {
-      const newList = await getFinanceTagService({ typeId })
+      const newList = await (await getFinanceTagService({ typeId }))
 
       newList.forEach((item) => listFinanceTags.push(item))
     }

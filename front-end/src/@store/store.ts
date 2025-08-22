@@ -1,14 +1,25 @@
 import { create } from "zustand"
 
-import type { Auth, Store, StoreData, ToastItem } from "@/types"
+import type { Auth, Store, StoreData, ToastItem, TriggerValueKeys } from "@/types"
 
 const initialState: StoreData = {
   l: {},
   auth: {} as Auth,
   toast: [],
   triggers: {},
+  month: '',
   listFinanceTypes: [],
   listFinanceTags: [],
+  listActive: [
+    { id: 1, name: "Active" },
+    { id: 0, name: 'Inactive' }
+  ],
+  listLimit: [
+    { id: 5, name: "5" },
+    { id: 10, name: "10" },
+    { id: 20, name: "30" },
+    { id: 40, name: "40" },
+  ],
 }
 
 export const storeStructure = create<Store>((set, get) => ({
@@ -36,6 +47,9 @@ export const storeStructure = create<Store>((set, get) => ({
   setToast: (toast: ToastItem[]) => {
     set({ toast })
   },
+  setMonth: (month: string) => {
+    set({ month })
+  },
   startLoading: (key: string) => {
     set({ l: { [key]: true } })
   },
@@ -48,7 +62,7 @@ export const storeStructure = create<Store>((set, get) => ({
     set({ triggers: { ...triggers, [key]: value } })
 
   },
-  triggerCount: (key: string) => {
+  triggerCount: (key: TriggerValueKeys) => {
     const { triggers } = get()
 
     if (typeof triggers?.[key] !== 'number') {
@@ -61,13 +75,14 @@ export const storeStructure = create<Store>((set, get) => ({
 }))
 
 export const getStore = () => {
-  const { l, auth, toast, triggers, listFinanceTags, listFinanceTypes } = storeStructure.getState()
+  const { l, auth, toast, triggers, month, listFinanceTags, listFinanceTypes } = storeStructure.getState()
 
   return {
     l,
     auth,
     toast,
     triggers,
+    month,
     listFinanceTags,
     listFinanceTypes
   }

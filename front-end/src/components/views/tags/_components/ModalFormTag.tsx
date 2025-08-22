@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { useStore } from "@/hooks/useStore";
 import { useTrigger } from "@/hooks/useTriggers";
-import FormTag from "./FormTag";
 
 const ModalFormTag = () => {
   const { triggers } = useStore();
@@ -29,7 +28,8 @@ const ModalFormTag = () => {
         <DialogHeader>
           <DialogTitle>Tag</DialogTitle>
           <DialogDescription />
-          <FormTag />
+          {/* <FormTag /> */}
+          aaaaaaaaaaa
         </DialogHeader>
       </DialogContent>
     </Dialog>

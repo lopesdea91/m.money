@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { cn } from "@/utils/utils";
 
-function Select({
+function SelectBase({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;
@@ -170,46 +170,42 @@ function SelectScrollDownButton({
   );
 }
 
-function Select2({
-  // className,
+function Select({
+  disabled,
   placeholder,
   errorMessage,
   options,
   onChange,
+  optionEmpty,
+  className,
   ...values
 }: {
+  disabled?: boolean;
   className?: string;
   placeholder?: string;
   errorMessage?: string;
   value?: string;
   defaultValue?: string;
   onChange: (v: string) => void;
+  optionEmpty?: boolean;
   options: { value: string; label: string }[];
 }) {
   return (
     <>
-      {/* <input
-        type={type}
-        data-slot="input"
-        className={cn(
-          "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-          "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-          className
-        )}
-        {...props}
-      /> */}
-
-      <SelectBase {...values}>
-        <SelectTrigger className="">
+      <SelectBase
+        {...{ ...values, disabled }}
+        onValueChange={(value) => onChange(value)}
+      >
+        <SelectTrigger className={className}>
           <SelectValue {...{ placeholder }} />
         </SelectTrigger>
-        <SelectContent
-          onChange={(e) => onChange(e.currentTarget.nodeValue ?? "")}
-        >
-          {options.map(({ value, label }) => (
-            <SelectItem key={value} value={value}>
-              {label}
+
+        <SelectContent>
+          {optionEmpty && <SelectItem value="all">All</SelectItem>}
+
+          {options.map((op) => (
+            <SelectItem key={op.value} value={op.value}>
+              {op.label}
             </SelectItem>
           ))}
         </SelectContent>
@@ -228,16 +224,19 @@ function SelectRoot({ className, ...props }: React.ComponentProps<"div">) {
   return <div className={cn("grid gap-2", className)} {...props} />;
 }
 
-export {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectRoot,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-};
+// export {
+//   Select,
+//   Select2,
+//   SelectContent,
+//   SelectGroup,
+//   SelectItem,
+//   SelectLabel,
+//   SelectRoot,
+//   SelectScrollDownButton,
+//   SelectScrollUpButton,
+//   SelectSeparator,
+//   SelectTrigger,
+//   SelectValue,
+// };
+
+export { Select, SelectRoot };

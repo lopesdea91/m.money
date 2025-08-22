@@ -19,7 +19,7 @@ export const useLoginForm = () => {
     resolver: zodResolver(schema),
     defaultValues: {
       email: "user1@email.com",
-      password: "123456",
+      password: "user+1-@julh_,1",
     },
   });
 

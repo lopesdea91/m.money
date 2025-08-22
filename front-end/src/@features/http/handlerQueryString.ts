@@ -47,7 +47,7 @@ export const filterQueryString = <T extends Record<string, unknown>>(params: T) 
       return
     }
 
-    if (value !== null && value !== '' && value !== undefined) {
+    if (value !== null && value !== '' && value !== undefined && value !== 'all') {
       data[key] = value
       return
     }

@@ -2,11 +2,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { formFinanceTagSchema, type FormFinanceTagSchema } from "@/@features/schemas/formFinanceTag";
-import type { FinanceTag, IFormFinanceTagValues } from "@/types";
+import type { CB, IFormFinanceTagInput, IFormFinanceTagValues } from "@/types";
 
-type Callback = (values: IFormFinanceTagValues) => Promise<void>;
+export const useTagForm = (callback: CB<IFormFinanceTagValues>) => {
+  const parseInput = (data: Partial<IFormFinanceTagInput> = {}) => ({
+    id: data?.id?.toString() ?? '',
+    name: data?.name ?? '',
+    typeId: data?.typeId?.toString() ?? '2',
+  })
 
-export const useTagForm = (callback: Callback) => {
+  const parseOutput = ({ id, name, typeId }: FormFinanceTagSchema): IFormFinanceTagValues => ({
+    id: Number(id),
+    name: name,
+    typeId: Number(typeId),
+  })
+
   const {
     watch,
     handleSubmit,
@@ -14,34 +24,19 @@ export const useTagForm = (callback: Callback) => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(formFinanceTagSchema),
-    defaultValues: {
-      id: "",
-      name: "",
-      typeId: "",
-    },
+    defaultValues: parseInput()
   });
 
   const values = watch();
 
-  const setValues = (currentValues: Partial<FormFinanceTagSchema>) =>
+  const setValues = (currentValues: Partial<FormFinanceTagSchema>) => {
     Object.entries(currentValues).forEach(([key, value]) =>
       setValue(key as keyof FormFinanceTagSchema, value)
     );
-
-  const defineValues = (data: Partial<FinanceTag> = {}) => {
-    setValues({
-      id: data?.id?.toString() ?? '',
-      name: data?.name ?? '',
-      typeId: data?.typeId?.toString() ?? '',
-    })
   }
 
-  const parseOutput = ({ id, name, typeId }: FormFinanceTagSchema): IFormFinanceTagValues => {
-    return {
-      id: Number(id),
-      name: name,
-      typeId: Number(typeId),
-    }
+  const defineValues = (data: Partial<IFormFinanceTagInput> = {}) => {
+    setValues(parseInput(data))
   }
 
   return {
