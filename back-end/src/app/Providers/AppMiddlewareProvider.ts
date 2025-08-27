@@ -5,7 +5,6 @@ import { User } from '../../entity/User';
 const userRepository = AppDataSource.getRepository(User);
 
 export default async function AppMiddlewareProvider(req: Request, res: Response, next: NextFunction) {
-  console.log(req.headers.authorization);
   if ([
     '/users',
     '/auth/signIn',

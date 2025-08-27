@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { FinanceOrder } from "../../entity/FinanceOrder";
+import { financeOrderResource } from "../Resource/FinanceOrderResource";
 import financeOrderService from "../Services/FinanceOrderService";
 import { QueryPagination } from "../utils";
 
@@ -48,9 +49,7 @@ const financeOrderController = {
     try {
       const data = { ...req.body, active: 1 }
 
-      if (!data || !data.value || !data.date || !data.month || !data.typeId || !data.tagIds || !data.userId) {
-        throw Error("value, date, month, typeId, tagIds and userId are required")
-      }
+      financeOrderResource.create(data)
 
       const { item } = await financeOrderService.create(data)
 
@@ -63,9 +62,7 @@ const financeOrderController = {
     try {
       const data = { ...req.body, active: 1 };
 
-      if (!data || !data.value || !data.date || !data.month || !data.typeId || !data.tagIds || !data.userId) {
-        throw Error("value, date, month, typeId, tagIds and userId are required")
-      }
+      financeOrderResource.update(data)
 
       const { item } = await financeOrderService.update(
         Number(req.params.id),

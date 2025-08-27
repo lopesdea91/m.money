@@ -38,7 +38,11 @@ const financeTagService = {
       skip: (currentPage - 1) * perPage,
       take: perPage,
       where: { ...where },
-      order: { id: 'DESC', typeId: 'ASC' },
+      order: {
+        active: 'DESC',
+        typeId: 'DESC',
+        name: 'ASC',
+      },
     })
 
     const lastPages = Math.ceil(total / perPage);
@@ -80,11 +84,15 @@ const financeTagService = {
   create: async (payload: {
     name: string
     typeId: number
-    active: number
     userId: number
   }) => {
     const financeTag = await financeTagRepository.save(
-      financeTagRepository.create(payload)
+      financeTagRepository.create({
+        name: payload.name,
+        typeId: payload.typeId,
+        active: 1,
+        userId: payload.userId,
+      })
     )
 
     const dependecies = await getDependecies()
@@ -104,7 +112,12 @@ const financeTagService = {
     if (!(await financeTagRepository.findOneBy({ id })))
       throw new Error(`FinanceTag (${id}) not found!`)
 
-    await financeTagRepository.update(id, payload)
+    await financeTagRepository.update(id, {
+      name: payload.name,
+      typeId: payload.typeId,
+      active: payload.active,
+      userId: payload.userId,
+    })
 
     const financeTag = await financeTagRepository.findOneBy({ id });
 

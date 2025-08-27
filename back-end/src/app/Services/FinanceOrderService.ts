@@ -59,7 +59,7 @@ const financeOrderService = {
 
     let _where = undefined
 
-    if (!!tagIds.length) {
+    if (!!tagIds?.length) {
       const orderIds = (await financeOrderTagsRepository
         .find({ where: { tagId: In(tagIds) } }))
         .map((el) => el.orderId)
@@ -73,7 +73,10 @@ const financeOrderService = {
       skip: (currentPage - 1) * perPage,
       take: perPage,
       where: { ...where, ..._where },
-      order: { id: 'DESC', typeId: 'ASC' },
+      order: {
+        date: 'ASC',
+        typeId: 'ASC'
+      },
 
     })
 
@@ -96,7 +99,7 @@ const financeOrderService = {
 
     let _where = undefined
 
-    if (!!tagIds.length) {
+    if (!!tagIds?.length) {
       const orderIds = (await financeOrderTagsRepository
         .find({ where: { tagId: In(tagIds) } }))
         .map((el) => el.orderId)
@@ -106,7 +109,7 @@ const financeOrderService = {
       }
     }
 
-    const items = await financeOrderRepository.find({ where: { ...where, ..._where } })
+    const items = await financeOrderRepository.find({ where: { ...where, ..._where } }) ?? []
 
     const dependecies = await getDependecies(Number(where.userId))
 
@@ -131,13 +134,19 @@ const financeOrderService = {
     month: string
     typeId: number
     tagIds: number[]
-    active: number
     userId: number
   }) => {
     const { tagIds } = payload
 
     const financeOrder = await financeOrderRepository.save(
-      financeOrderRepository.create(payload)
+      financeOrderRepository.create({
+        value: payload.value,
+        date: payload.date,
+        month: payload.month,
+        typeId: payload.typeId,
+        active: 1,
+        userId: payload.userId,
+      })
     )
     const orderId = financeOrder.id
 
@@ -168,7 +177,14 @@ const financeOrderService = {
 
     const { tagIds } = payload
 
-    await financeOrderRepository.update(orderId, payload)
+    await financeOrderRepository.update(orderId, {
+      value: payload.value,
+      date: payload.date,
+      month: payload.month,
+      typeId: payload.typeId,
+      active: payload.active,
+      userId: payload.userId,
+    })
 
     /** delete orderTags */
     await financeOrderTagsRepository.find({ where: { orderId } })

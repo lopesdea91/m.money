@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { FinanceTag } from "../../entity/FinanceTag";
+import { financeTagResource } from "../Resource/FinanceTagResource";
 import financeTagService from "../Services/FinanceTagService";
 import { QueryPagination } from "../utils";
 
@@ -44,11 +45,9 @@ const financeTagController = {
   },
   create: async (req: Request, res: Response) => {
     try {
-      const data = { ...req.body, active: 1 }
+      const data = { ...req.body }
 
-      if (!data || !data.name || !data.typeId || !data.userId) {
-        throw Error("Name, typeId, and userId are required")
-      }
+      financeTagResource.create(data)
 
       const { item } = await financeTagService.create(data)
 
@@ -61,9 +60,7 @@ const financeTagController = {
     try {
       const data = { ...req.body };
 
-      if (!data || !data.name || !data.typeId || !data.active || !data.userId) {
-        throw Error("Name, typeId, active, and userId are required")
-      }
+      financeTagResource.update(data)
 
       const { item } = await financeTagService.update(
         Number(req.params.id),
