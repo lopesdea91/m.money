@@ -1,24 +1,24 @@
 import { formatValue } from "@/utils/financeOrder";
 import { cn } from "@/utils/utils";
-import { useDashboardPageHook } from "../page.hook";
+import { useDashboardPageContext } from "../page.context";
 
-function SumTypes() {
+function SumTypesCards() {
   const {
-    data: { sumTypes },
-  } = useDashboardPageHook();
+    data: { sumTypesCards },
+  } = useDashboardPageContext();
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-6">
-      {sumTypes.map((sumType) => (
+      {sumTypesCards.map((sumTypesCard) => (
         <div
-          key={sumType.label}
+          key={sumTypesCard.label}
           className={cn(
             "grid gap-2 p-4",
             "border border-gray-300 rounded shadow-sm"
           )}
         >
-          <span className="font-thin text-lg">{sumType.label}</span>
+          <span className="font-thin text-lg">{sumTypesCard.label}</span>
           <span className="font-semibold font-mono text-2xl text-gray-700 truncate ">
-            {formatValue(sumType.value)}
+            {formatValue(sumTypesCard.value)}
           </span>
         </div>
       ))}
@@ -26,4 +26,4 @@ function SumTypes() {
   );
 }
 
-export default SumTypes;
+export default SumTypesCards;

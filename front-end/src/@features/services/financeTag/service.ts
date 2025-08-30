@@ -18,20 +18,12 @@ export const getPaginationFinanceTagService = async (search: {
 export const getFinanceTagService = async (search: {
   typeId?: number
   active?: number
-  limit?: number
-  page?: number
 } = {}) => {
   const userId = getStore().auth.id
 
-  const {
-    items = [],
-    currentPage = 1,
-    lastPages = 1,
-    perPage = 10,
-    total = 0
-  } = await getFinanceTagApi({ ...search, userId })
+  const financeTagAll = await getFinanceTagApi({ ...search, userId })
 
-  return { items, currentPage, lastPages, perPage, total }
+  return financeTagAll
 }
 
 export const createFinanceTagService = async (payload: {
@@ -40,10 +32,9 @@ export const createFinanceTagService = async (payload: {
 }) => {
   const userId = getStore().auth.id
 
-  const data: Omit<FinanceTag, 'id' | 'type'> = {
+  const data: Omit<FinanceTag, 'id' | 'type' | 'active'> = {
     name: payload.name,
     typeId: payload.typeId,
-    active: 1,
     userId: userId,
   }
 

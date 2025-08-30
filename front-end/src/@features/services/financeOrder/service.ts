@@ -21,8 +21,6 @@ export const getFinanceOrderService = async (search: {
   typeId?: number
   tagIds?: number[]
   active?: number
-  limit?: number
-  page?: number
 } = {}) => {
   const userId = getStore().auth.id
 

@@ -1,7 +1,9 @@
 import PageTitle from "@/components/PageTitle";
-import ChartTags from "./_components/ChartTags";
-import SumTags from "./_components/SumTags";
-import SumTypes from "./_components/SumTypes";
+import ChartLineOrders from "./_components/ChartLineOrders";
+import ChartPieExpenses from "./_components/ChartPieExpenses";
+import ChartPieRevenues from "./_components/ChartPieRevenues";
+import ListOrders from "./_components/ListOrders";
+import SumTypesCards from "./_components/SumTypesCards";
 import { DashboardPageContextProvider } from "./page.provider";
 
 export const DashboardPage = () => {
@@ -9,12 +11,15 @@ export const DashboardPage = () => {
     <DashboardPageContextProvider>
       <PageTitle label="Dashboard" className="mb-4" />
 
-      <SumTypes />
+      <SumTypesCards />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-        <SumTags />
-        <ChartTags />
+      <div className="grid grid-cols-1 md:grid-cols-3 md:h-[500px] md:h-[250px] gap-2 mb-6">
+        <ChartPieRevenues />
+        <ChartPieExpenses />
+        <ListOrders />
       </div>
+
+      <ChartLineOrders />
     </DashboardPageContextProvider>
   );
 };

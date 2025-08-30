@@ -1,22 +1,25 @@
-import type { FinanceOrder, SumTagValue, SumTypeValue } from "@/types";
+import type { ChartPieType, FinanceOrder, SumTagValue, SumTypeValue } from "@/types";
 
-export const renderData = (items: FinanceOrder[]) => {
-  const sumTypes: SumTypeValue[] = [
+
+const renderSumTypesCards = (items: FinanceOrder[]): SumTypeValue[] => {
+  const sumTypesCards: SumTypeValue[] = [
     { label: 'Receita', value: 0, slug: 'receita' },
     { label: 'Despesa', value: 0, slug: 'despesa' },
     { label: 'Disponível', value: 0, slug: 'disponivel' },
   ]
   items.forEach(item => {
     if (item.typeId === 1) {
-      sumTypes[0].value += item.value
+      sumTypesCards[0].value += item.value
     }
     if (item.typeId === 2) {
-      sumTypes[1].value += item.value
+      sumTypesCards[1].value += item.value
     }
-    sumTypes[2].value = sumTypes[0].value - sumTypes[1].value
+    sumTypesCards[2].value = sumTypesCards[0].value - sumTypesCards[1].value
   })
 
-
+  return sumTypesCards
+}
+const renderSumTags = (items: FinanceOrder[]): SumTagValue[] => {
   const sumTags: SumTagValue[] = []
 
   Object.values(items
@@ -45,6 +48,68 @@ export const renderData = (items: FinanceOrder[]) => {
     .sort((itemA, itemB) => itemA.key.localeCompare(itemB.key))
     .forEach(item => sumTags.push(item))
 
+  return sumTags
+}
+const renderSumTypesChartRevenues = (items: FinanceOrder[]): ChartPieType[] => {
+  return items
+    .filter(e => e.typeId === 1)
+    .map(item => ({
+      ...item,
+      tagNames: item.tags.map(tag => tag.name).join(', ')
+    }))
+    .reduce((acc: ChartPieType[], item) => {
+      const hasItem = acc.find(el => el.name === item.tagNames)
 
-  return { sumTypes, sumTags }
+      if (hasItem) {
+        acc = [...acc].map(el => {
+          if (el.name === item.tagNames) {
+            el.y = el.y + item.value
+          }
+          return el
+        })
+
+      } else {
+        acc.push({
+          name: item.tagNames,
+          y: item.value
+        })
+      }
+      return acc
+    }, [] as ChartPieType[])
+}
+const renderSumTypesChartExpenses = (items: FinanceOrder[]) => {
+  return items
+    .filter(e => e.typeId === 2)
+    .map(item => ({
+      ...item,
+      tagNames: item.tags.map(tag => tag.name).join(', ')
+    }))
+    .reduce((acc: ChartPieType[], item) => {
+      const hasItem = acc.find(el => el.name === item.tagNames)
+
+      if (hasItem) {
+        acc = [...acc].map(el => {
+          if (el.name === item.tagNames) {
+            el.y = el.y + item.value
+          }
+          return el
+        })
+
+      } else {
+        acc.push({
+          name: item.tagNames,
+          y: item.value
+        })
+      }
+      return acc
+    }, [] as ChartPieType[])
+}
+
+export const renderData = (items: FinanceOrder[]) => {
+  return {
+    sumTypesCards: renderSumTypesCards(items),
+    sumTags: renderSumTags(items),
+    chartRevenues: renderSumTypesChartRevenues(items),
+    chartExpenses: renderSumTypesChartExpenses(items),
+  }
 }

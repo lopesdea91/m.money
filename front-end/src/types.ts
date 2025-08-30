@@ -1,19 +1,27 @@
+import type { DeepPartial } from "react-hook-form";
 import type features from "./@features";
+import type { FormFinanceOrderSearchSchema } from "./@features/schemas/formFinanceOrder";
+import type { FormFinanceTagSearchSchema } from "./@features/schemas/formFinanceTag";
 
 export type CB<T> = (values: T) => Promise<void>;
 
 /** TRIGGERS */
 export type TriggerValue = {
   /** geral */
+  navigateTo: string
+
   modalConfirmDelete: boolean
   modalConfirmDeleteData: Record<string, unknown>
 
   /** page TAG */
   tableTag: number
+  modalFilterTag: boolean
   modalFormTag: boolean
   modalFormTagData: Partial<FinanceTag>
+
   /** page ORDER */
   tableOrder: number
+  modalFilterOrder: boolean
   modalFormOrder: boolean
   modalFormOrderData: Partial<FinanceOrder>
 }
@@ -42,8 +50,27 @@ export type StoreData = {
   listFinanceTags: FinanceTag[]
   listActive: { id: number; name: string }[]
   listLimit: { id: number; name: string }[]
+  pages: {
+    tags: {
+      filter: FormFinanceTagSearchSchema
+      table: {
+        items: FinanceTag[]
+        lastPage: number
+        total: number
+      }
+    }
+    orders: {
+      filter: FormFinanceOrderSearchSchema
+      table: {
+        items: FinanceOrder[]
+        lastPage: number
+        total: number
+      }
+    }
+  }
 }
 export type StoreActions = {
+  set: (values: DeepPartial<StoreData>) => void
   setData: (values: Partial<StoreData>) => void
   setAuth: (params: Auth) => void
   setToast: (toast: ToastItem[]) => void
@@ -95,11 +122,13 @@ export type IFormFinanceTagInput = {
   id: number | null;
   name: string;
   typeId: number;
+  active: number;
 }
 export type IFormFinanceTagValues = {
   id: number;
   name: string;
   typeId: number;
+  active: number;
 }
 export type IFormFinanceOrderInput = {
   id: number
@@ -117,9 +146,16 @@ export type IFormFinanceOrderValues = {
   // active: number
   // userId: number
 }
-
+export type IFormLoginValues = {
+  email: string;
+  password: string;
+}
 
 /** DASH */
+export type ChartPieType = {
+  name: string
+  y: number
+}
 export type SumTypeValue = {
   label: string
   value: number
@@ -132,3 +168,6 @@ export type SumTagValue = {
   tags: { id: number, name: string }[]
   tagIds: number[]
 }
+
+/** TAG */
+// export type ITagFilter = {}

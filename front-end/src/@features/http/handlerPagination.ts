@@ -3,26 +3,26 @@ function handlerPagination<T>({
   items = [],
   // perPage = 10,
   // currentPage,
-  lastPages = 1,
+  lastPage = 1,
   total = 0
 }: {
   items?: T[];
   // perPage?: number;
   // currentPage?: number;
-  lastPages?: number;
+  lastPage?: number;
   total?: number;
 }): {
   items: T[];
   // perPage: number;
   // currentPage?: number;
-  lastPages: number;
+  lastPage: number;
   total: number;
 } {
   return {
     items,
     // perPage,
     // currentPage,
-    lastPages,
+    lastPage,
     total
   }
 }

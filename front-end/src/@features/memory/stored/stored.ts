@@ -36,7 +36,8 @@ export const pageOrderSearchStored = () => baseStored<{
 }>('pageOrderSearch', {
   active: 1,
   limit: 10,
-  page: 1
+  page: 1,
+  tagIds: []
 })
 
 export const stored = {

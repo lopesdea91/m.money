@@ -15,12 +15,10 @@ import { cn } from "@/utils/utils";
 import { useOrderPageContext } from "../page.context";
 
 const TableOrders = () => {
-  const { listLimit, table, triggerCount, triggerValue } =
-    useOrderPageContext();
+  const { tableOrder, filterOrder, listLimit } = useOrderPageContext();
 
   return (
     <Table>
-      {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
       <TableHeader>
         <TableRow>
           <TableHead className="">ID</TableHead>
@@ -32,7 +30,7 @@ const TableOrders = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {table.v.items.map((order) => (
+        {tableOrder.v.items.map((order) => (
           <TableRow key={order.id}>
             <TableCell className="text-xs">{order.id}</TableCell>
 
@@ -61,25 +59,23 @@ const TableOrders = () => {
             <TableCell className="">
               <div className="flex items-center justify-end gap-1">
                 <button
-                  className="cursor-pointer border size-[24px] flex *:m-auto"
-                  onClick={() => {
-                    triggerValue({
-                      modalConfirmDelete: true,
-                      modalConfirmDeleteData: { id: order.id },
-                    });
-                  }}
+                  className={cn(
+                    "flex *:m-auto size-[36px] rounded-md cursor-pointer hover:shadow-md duration-150",
+                    "border border-red-800/20 hover:border-red-800/80 bg-red-50",
+                    "text-red-700"
+                  )}
+                  onClick={() => tableOrder.onDelete(order.id)}
                 >
-                  <TrashIcon size={16} />
+                  <TrashIcon size={16} className="" />
                 </button>
 
                 <button
-                  className="cursor-pointer border rounded size-[24px] flex *:m-auto"
-                  onClick={() => {
-                    triggerValue({
-                      modalFormOrder: true,
-                      modalFormOrderData: order,
-                    });
-                  }}
+                  className={cn(
+                    "flex *:m-auto size-[36px] rounded-md cursor-pointer hover:shadow-md duration-150",
+                    "border border-gray-300 hover:border-gray-600",
+                    "text-gray-600"
+                  )}
+                  onClick={() => tableOrder.onEdit(order)}
                 >
                   <PenIcon size={16} />
                 </button>
@@ -88,7 +84,7 @@ const TableOrders = () => {
           </TableRow>
         ))}
 
-        {table.v.items.length === 0 && (
+        {tableOrder.v.items.length === 0 && (
           <TableRow>
             <TableCell colSpan={6}>
               <div className="min-h-[50px]">No records</div>
@@ -101,58 +97,15 @@ const TableOrders = () => {
         <TableRow>
           <TableCell colSpan={6}>
             <TablePagination
-              perPage={table.v.perPage}
-              currentPage={table.v.currentPage}
-              total={table.v.total}
-              lastPages={table.v.lastPages}
+              perPage={filterOrder.v.limit}
+              currentPage={filterOrder.v.page}
+              total={tableOrder.v.total}
+              lastPage={tableOrder.v.lastPage}
               listLimit={listLimit}
-              onLimit={(v) => {
-                table.stored().set({ limit: +v });
-                triggerCount("tableOrder");
-              }}
-              onPrevPage={(page) => {
-                table.stored().set({ page });
-                triggerCount("tableOrder");
-              }}
-              onNextPage={(page) => {
-                table.stored().set({ page });
-                triggerCount("tableOrder");
-              }}
+              onLimit={(limit) => tableOrder.onLimit(limit)}
+              onPrevPage={(page) => tableOrder.onChangePage(page)}
+              onNextPage={(page) => tableOrder.onChangePage(page)}
             />
-
-            {/* <div className="flex items-center gap-2">
-              <Select
-                placeholder="Limit"
-                value={table.v.perPage.toString()}
-                onChange={(v) => {
-                  pageOrderSearchStored().set({ limit: +v });
-                  // setData((p) => ({ ...p, perPage: +v }));
-                  triggerCount("tableOrder");
-                }}
-                options={listLimit}
-                className="w-fit"
-              />
-              <button
-                className="p-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={table.v.currentPage === 1}
-                onClick={() => {
-                  pageOrderSearchStored().set({ page: table.v.currentPage - 1 });
-                  triggerCount("tableOrder");
-                }}
-              >
-                <ChevronLeftIcon size={18} />
-              </button>
-              <button
-                className="p-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={table.v.currentPage === table.v.lastPages}
-                onClick={() => {
-                  pageOrderSearchStored().set({ page: table.v.currentPage + 1 });
-                  triggerCount("tableOrder");
-                }}
-              >
-                <ChevronRightIcon size={18} />
-              </button>
-            </div> */}
           </TableCell>
         </TableRow>
       </TableFooter>

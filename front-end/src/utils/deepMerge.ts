@@ -17,7 +17,8 @@ export function deepMerge<T extends GenericObject>(obj1: T, obj2: Partial<T>): G
 
       if (Array.isArray(value1) && Array.isArray(value2)) {
         /** Combinar os arrays */
-        pincipalData[key] = [...new Set([...value1, ...value2])].filter(Boolean);
+        // pincipalData[key] = [...new Set([...value1, ...value2])].filter(Boolean);
+        pincipalData[key] = value2
 
       } else if (isObject(value1) && isObject(value2)) {
         /** Merge recursivo para objetos */

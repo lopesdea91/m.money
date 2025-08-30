@@ -14,10 +14,12 @@ import type { TriggerValueKeys } from "@/types";
 export const Modal = ({
   children,
   title,
+  className,
   keyOpen,
 }: {
   children: ReactNode;
   title?: string;
+  className?: string;
   keyOpen: TriggerValueKeys;
 }) => {
   const { triggers } = useStore();
@@ -30,12 +32,12 @@ export const Modal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onChange}>
-      <DialogContent>
+      <DialogContent className={className}>
         <DialogHeader>
           {title ? <DialogTitle>{title}</DialogTitle> : <DialogTitle />}
           <DialogDescription />
-          {children}
         </DialogHeader>
+        {children}
       </DialogContent>
     </Dialog>
   );

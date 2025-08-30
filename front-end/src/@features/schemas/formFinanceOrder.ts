@@ -1,9 +1,11 @@
 import { z } from "zod";
 
 export const formFinanceOrderSearchSchema = z.object({
-  typeId: z.string(),
-  active: z.string(),
-  tagIds: z.array(z.string())
+  typeId: z.number(),
+  active: z.number(),
+  tagIds: z.array(z.number()),
+  page: z.number(),
+  limit: z.number(),
 });
 export type FormFinanceOrderSearchSchema = z.output<typeof formFinanceOrderSearchSchema>;
 

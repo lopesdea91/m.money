@@ -4,6 +4,7 @@ import useMiddleware from "@/hooks/useMiddleware";
 import { useStore } from "@/hooks/useStore";
 import { cn } from "@/utils/utils";
 import { Link, Outlet } from "react-router";
+import SetupGeneric from "../SetupGeneric";
 import ToastGeneric from "../Toasts.generic";
 
 export const LayoutPrivate = () => {
@@ -13,6 +14,7 @@ export const LayoutPrivate = () => {
 
   return isPending ? null : (
     <>
+      <SetupGeneric />
       <ToastGeneric />
 
       <header className="bg-gray-800 text-white mb-4">
@@ -30,7 +32,6 @@ export const LayoutPrivate = () => {
             onChange={({ target }) => {
               appStored().set({ month: target.value });
               setMonth(target.value);
-              console.log(target.value);
             }}
             type="month"
           />
@@ -78,7 +79,7 @@ export const LayoutPrivate = () => {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto p-4">
+      <main className="max-w-4xl mx-auto p-4 z-10">
         <Outlet />
       </main>
     </>

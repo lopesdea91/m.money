@@ -5,34 +5,36 @@ import handlerPagination from "../http/handlerPagination"
 
 const url = '/finance-orders'
 
-export const getPaginationFinanceOrderApi = async (query: {
-  userId: number
-  limit: number
-  page: number
-  month?: string
-  typeId?: number
-  tagIds?: number[]
-  active?: number
-}) => {
+export const getPaginationFinanceOrderApi = async (
+  query: {
+    userId: number
+    limit: number
+    page: number
+    month?: string
+    typeId?: number
+    tagIds?: number[]
+    active?: number
+  }
+) => {
   return httpClient.get<{
     items: FinanceOrder[]
     "currentPage": number
-    "lastPages": number
+    "lastPage": number
     "perPage": number
     "total": number
   }>(`${url}${getQueryString(query)}`)
     .then(({ data }) => handlerPagination(data))
 }
 
-export const getFinanceOrderApi = async (query: {
-  userId: number
-  month?: string
-  typeId?: number
-  tagIds?: number[]
-  active?: number
-  limit?: number
-  page?: number
-}) => {
+export const getFinanceOrderApi = async (
+  query: {
+    userId: number
+    month?: string
+    typeId?: number
+    tagIds?: number[]
+    active?: number
+  }
+) => {
   return httpClient.get<FinanceOrder[]>(`${url}${getQueryString(query)}`)
     .then(({ data }) => data)
 }

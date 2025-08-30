@@ -16,7 +16,7 @@ function useTrigger<T>(
     async function handler() {
       const v = triggers?.[key] as T;
 
-      if (!v) return;
+      // if (!v) return;
 
       if (delay) await sleep(delay);
 

@@ -107,7 +107,7 @@ function TablePagination({
   perPage,
   currentPage,
   total,
-  lastPages,
+  lastPage,
   listLimit,
   onLimit,
   onPrevPage,
@@ -116,7 +116,7 @@ function TablePagination({
   perPage: number;
   currentPage: number;
   total: number;
-  lastPages: number;
+  lastPage: number;
   listLimit: { value: string; label: string }[];
   onLimit: (v: number) => void;
   onPrevPage: (v: number) => void;
@@ -140,7 +140,7 @@ function TablePagination({
       </button>
       <button
         className="p-2 border rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        disabled={currentPage === lastPages}
+        disabled={currentPage === lastPage}
         onClick={() => onNextPage(Number(currentPage) + 1)}
       >
         <ChevronRightIcon size={18} />

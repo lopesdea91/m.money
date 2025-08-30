@@ -42,6 +42,15 @@ export const filterQueryString = <T extends Record<string, unknown>>(params: T) 
   Object.keys(params).forEach(key => {
     const value = params[key]
 
+    if (Array.isArray(value) && value.length === 0) {
+      return
+    }
+
+    if (Array.isArray(value)) {
+      data[key] = value
+      return
+    }
+
     if (!Number.isNaN(+String(value))) {
       data[key] = Number(value)
       return
@@ -51,9 +60,7 @@ export const filterQueryString = <T extends Record<string, unknown>>(params: T) 
       data[key] = value
       return
     }
-    if (Array.isArray(value) && value.length > 0) {
-      data[key] = value
-    }
+
   })
 
   return data

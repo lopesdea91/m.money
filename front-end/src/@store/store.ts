@@ -1,29 +1,14 @@
 import { create } from "zustand"
 
 import type { Auth, Store, StoreData, ToastItem, TriggerValueKeys } from "@/types"
+import { deepMerge } from "@/utils/deepMerge"
+import type { DeepPartial } from "react-hook-form"
+import { initialState } from "./store.content"
 
-const initialState: StoreData = {
-  l: {},
-  auth: {} as Auth,
-  toast: [],
-  triggers: {},
-  month: '',
-  listFinanceTypes: [],
-  listFinanceTags: [],
-  listActive: [
-    { id: 1, name: "Active" },
-    { id: 0, name: 'Inactive' }
-  ],
-  listLimit: [
-    { id: 5, name: "5" },
-    { id: 10, name: "10" },
-    { id: 20, name: "30" },
-    { id: 40, name: "40" },
-  ],
-}
 
 export const storeStructure = create<Store>((set, get) => ({
   ...initialState,
+  set: (values: DeepPartial<StoreData>) => { set(state => deepMerge<DeepPartial<StoreData>>(state, values)) },
   setData: (values: Partial<StoreData>) => {
     const store = get()
 
@@ -39,6 +24,7 @@ export const storeStructure = create<Store>((set, get) => ({
       toast: values.toast || store.toast,
       listFinanceTypes: values.listFinanceTypes ?? store.listFinanceTypes ?? [],
       listFinanceTags: values.listFinanceTags ?? store.listFinanceTags ?? [],
+      triggers: { ...store.triggers, ...values.triggers }
     }))
   },
   setAuth: (auth: Auth) => {

@@ -6,7 +6,7 @@ import { cn } from "@/utils/utils";
 export default function ToastGeneric() {
   const toast = useToast();
   return (
-    <div className="fixed top-2 right-2 flex flex-col gap-4 items-end">
+    <div className="fixed top-2 right-2 flex flex-col gap-4 items-end z-50">
       {toast.items.map((item) => (
         <div
           key={item._id}

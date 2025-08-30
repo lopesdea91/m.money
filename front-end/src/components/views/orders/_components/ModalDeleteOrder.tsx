@@ -2,29 +2,18 @@ import { Button } from "@/components/ui/button";
 import { useOrderPageContext } from "../page.context";
 
 const ConfirmDelete = () => {
-  const {
-    confirmDelete: { onDelete },
-    triggerValue,
-  } = useOrderPageContext();
+  const { modalDeleteOrder } = useOrderPageContext();
 
   return (
     <div>
       <div>Do you really want to delete?</div>
 
       <div className="flex items-center justify-end gap-2 border-t pt-4">
-        <Button
-          type="button"
-          onClick={() =>
-            triggerValue({
-              modalConfirmDelete: false,
-              modalConfirmDeleteData: {},
-            })
-          }
-        >
+        <Button type="button" onClick={() => modalDeleteOrder.onClose()}>
           Cancel
         </Button>
 
-        <Button type="button" onClick={() => onDelete()}>
+        <Button type="button" onClick={() => modalDeleteOrder.onDelete()}>
           Confirm
         </Button>
       </div>

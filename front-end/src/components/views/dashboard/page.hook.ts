@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 import features from "@/@features"
 import { getFinanceOrderService } from "@/@features/services/financeOrder/service"
 import { storeStructure } from "@/@store"
-import { useStore } from "@/hooks/useStore"
+import { usePageInit } from "@/hooks/usePageInit"
 import { useWatch } from "@/hooks/useWatch"
-import type { Features, Store, SumTagValue, SumTypeValue } from "@/types"
+import type { ChartPieType, Features, Store, SumTagValue, SumTypeValue } from "@/types"
 import { renderData } from "./page.utils"
 
 export const usePageHook = ({
@@ -26,13 +26,18 @@ export const usePageHook = ({
     triggerCount
   }
 }: Features) => {
-  useStore()
+  const isMounted = useRef<boolean>(false)
+
   const [dashData, setDataDash] = useState<{
-    sumTypes: SumTypeValue[],
+    sumTypesCards: SumTypeValue[],
     sumTags: SumTagValue[],
+    chartRevenues: ChartPieType[],
+    chartExpenses: ChartPieType[],
   }>({
+    sumTypesCards: [],
     sumTags: [],
-    sumTypes: []
+    chartRevenues: [],
+    chartExpenses: [],
   });
 
   const fetchData = async () => {
@@ -40,17 +45,30 @@ export const usePageHook = ({
       const items = await getFinanceOrderService({
         month, active: 1
       })
-      console.log({ items });
-      setDataDash(renderData(items || []))
+      const { sumTypesCards, sumTags, chartRevenues, chartExpenses } = renderData(items || [])
+
+      setDataDash({
+        sumTypesCards, sumTags, chartRevenues, chartExpenses
+      })
     } catch (error) {
       console.log(error);
     }
   }
 
   /** watchs */
-  // usePageInit({ title: "Dashboard", cb: fetchData });
-  // useTrigger("tableOrder", () => fetchData());
-  useWatch(month, () => fetchData());
+  useWatch(month, () => {
+    if (!isMounted.current) return
+
+    fetchData()
+  });
+
+  usePageInit({
+    title: "Dashboard", cb: () => {
+      isMounted.current = true
+
+      fetchData()
+    }
+  });
 
   return {
     triggerValue,
@@ -61,4 +79,4 @@ export const usePageHook = ({
     }
   }
 }
-export const useDashboardPageHook = () => usePageHook(storeStructure.getState(), features)
+export const useDashboardPageHook = () => usePageHook(storeStructure(), features)
